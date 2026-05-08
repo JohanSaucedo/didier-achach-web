@@ -119,8 +119,8 @@
   const ctx = canvas.getContext('2d');
   let W, H, particles = [], mouse = { x: -999, y: -999 };
 
-  const ACCENT = '#c8f135';
-  const ACCENT2 = '#ff5a1f';
+  const ACCENT = '#e63535';
+  const ACCENT2 = '#f5de00';
   const COUNT = 72;
   const CONNECT_DIST = 140;
   const REPEL_DIST = 160;
@@ -212,7 +212,7 @@
     // subtle radial glow center
     if (tick % 3 === 0) {
       const grad = ctx.createRadialGradient(W*.5, H*.5, 0, W*.5, H*.5, W*.45);
-      grad.addColorStop(0, 'rgba(200,241,53,.025)');
+      grad.addColorStop(0, 'rgba(230,53,53,.025)');
       grad.addColorStop(1, 'transparent');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
