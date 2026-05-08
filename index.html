@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Didier Achach — Nutriólogo Deportivo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="pre-content">
+      <span class="pre-name">DIDIER ACHACH</span>
+      <div class="pre-bar-wrap"><div class="pre-bar"></div></div>
+      <span class="pre-count">0%</span>
+    </div>
+  </div>
+
+  <!-- NOISE -->
+  <canvas id="noise"></canvas>
+
+  <!-- CURSOR -->
+  <div id="cursor"></div>
+  <div id="cursor-follower"></div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-first">DIDIER</span>
+        <span class="logo-last">ACHACH</span>
+        <span class="logo-tag">NUTRIÓLOGO DEPORTIVO</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#testimonios">Resultados</a>
+        <a href="#contacto" class="nav-cta magnetic">Agendar consulta</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle">
+        <span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#servicios">Servicios</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#testimonios">Resultados</a>
+      <a href="#contacto">Agendar consulta</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-inner">
+      <div class="hero-tag reveal-up">
+        <span class="dot"></span> Nutrición deportiva · Mérida, Yucatán
+      </div>
+      <h1 class="hero-title reveal-up">
+        ALIMENTA<br>
+        TU <em>MÁXIMO</em><br>
+        POTENCIAL
+      </h1>
+      <p class="hero-sub reveal-up">
+        Planes de nutrición deportiva personalizados para elevar<br>
+        tu rendimiento, composición corporal y calidad de vida.
+      </p>
+      <div class="hero-actions reveal-up">
+        <a href="#contacto" class="btn-primary magnetic">Agenda tu consulta</a>
+        <a href="#servicios" class="btn-ghost magnetic">Ver planes →</a>
+      </div>
+      <div class="hero-stats reveal-up">
+        <div class="h-stat">
+          <span class="h-stat-num" data-target="500">0</span><span>+</span>
+          <span class="h-stat-label">Pacientes</span>
+        </div>
+        <div class="h-stat-divider"></div>
+        <div class="h-stat">
+          <span class="h-stat-num" data-target="8">0</span>
+          <span class="h-stat-label">Años de experiencia</span>
+        </div>
+        <div class="h-stat-divider"></div>
+        <div class="h-stat">
+          <span class="h-stat-num" data-target="97">0</span><span>%</span>
+          <span class="h-stat-label">Tasa de éxito</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span>PROTEÍNA ÓPTIMA</span><span class="dot-sep">✦</span>
+        <span>MASA MUSCULAR</span><span class="dot-sep">✦</span>
+        <span>PÉRDIDA DE GRASA</span><span class="dot-sep">✦</span>
+        <span>RENDIMIENTO MÁXIMO</span><span class="dot-sep">✦</span>
+        <span>SUPLEMENTACIÓN</span><span class="dot-sep">✦</span>
+        <span>NUTRICIÓN DEPORTIVA</span><span class="dot-sep">✦</span>
+        <span>COMPOSICIÓN CORPORAL</span><span class="dot-sep">✦</span>
+        <span>RECOMPOSICIÓN</span><span class="dot-sep">✦</span>
+        <span>PROTEÍNA ÓPTIMA</span><span class="dot-sep">✦</span>
+        <span>MASA MUSCULAR</span><span class="dot-sep">✦</span>
+        <span>PÉRDIDA DE GRASA</span><span class="dot-sep">✦</span>
+        <span>RENDIMIENTO MÁXIMO</span><span class="dot-sep">✦</span>
+        <span>SUPLEMENTACIÓN</span><span class="dot-sep">✦</span>
+        <span>NUTRICIÓN DEPORTIVA</span><span class="dot-sep">✦</span>
+        <span>COMPOSICIÓN CORPORAL</span><span class="dot-sep">✦</span>
+        <span>RECOMPOSICIÓN</span><span class="dot-sep">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-label">— 01 / Servicios</span>
+        <h2 class="section-title">PLANES<br><em>DISEÑADOS</em><br>PARA TI</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal-up" data-delay="0">
+          <div class="sc-num">01</div>
+          <div class="sc-icon">⚡</div>
+          <h3>Evaluación Inicial</h3>
+          <p>Análisis completo de composición corporal, hábitos alimenticios y objetivos. La base de todo cambio real.</p>
+          <div class="sc-tags"><span>Bioimpedancia</span><span>Historial clínico</span></div>
+        </div>
+        <div class="service-card reveal-up" data-delay="100">
+          <div class="sc-num">02</div>
+          <div class="sc-icon">🎯</div>
+          <h3>Plan Personalizado</h3>
+          <p>Diseño de plan nutricional adaptado a tu deporte, horario de entrenamiento y metas específicas.</p>
+          <div class="sc-tags"><span>Macros exactos</span><span>Timing de comidas</span></div>
+        </div>
+        <div class="service-card reveal-up" data-delay="200">
+          <div class="sc-num">03</div>
+          <div class="sc-icon">📈</div>
+          <h3>Seguimiento Mensual</h3>
+          <p>Revisiones periódicas para ajustar el plan según tu progreso. Constancia que genera resultados reales.</p>
+          <div class="sc-tags"><span>Ajuste de plan</span><span>Control de avance</span></div>
+        </div>
+        <div class="service-card reveal-up" data-delay="0">
+          <div class="sc-num">04</div>
+          <div class="sc-icon">🏆</div>
+          <h3>Nutrición para Competencia</h3>
+          <p>Preparación nutricional especializada para atletas y competidores: peaking, cutting, carb loading.</p>
+          <div class="sc-tags"><span>Pre-competencia</span><span>Post-competencia</span></div>
+        </div>
+        <div class="service-card reveal-up" data-delay="100">
+          <div class="sc-num">05</div>
+          <div class="sc-icon">💊</div>
+          <h3>Suplementación Guiada</h3>
+          <p>Protocolo de suplementos basado en evidencia científica. Sin mitos, sin gastos innecesarios.</p>
+          <div class="sc-tags"><span>Basado en evidencia</span><span>Protocolos reales</span></div>
+        </div>
+        <div class="service-card reveal-up" data-delay="200">
+          <div class="sc-num">06</div>
+          <div class="sc-icon">📱</div>
+          <h3>Asesoría Online</h3>
+          <p>Todo el servicio de forma remota. Ideal si estás fuera de Mérida o tienes agenda complicada.</p>
+          <div class="sc-tags"><span>Todo México</span><span>Atención flexible</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE MÍ -->
+  <section id="sobre-mi">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-left reveal-left">
+          <span class="section-label">— 02 / Sobre mí</span>
+          <h2 class="section-title">NUTRIÓLOGO<br><em>DEPORTIVO</em><br>CERTIFICADO</h2>
+          <p class="about-bio">
+            Soy Didier Achach, nutriólogo especializado en nutrición deportiva con más de 8 años ayudando a atletas,
+            deportistas recreativos y personas que buscan transformar su cuerpo a través de la ciencia de la alimentación.
+          </p>
+          <p class="about-bio">
+            Mi enfoque es claro: planes reales, resultados medibles, sin restricciones absurdas.
+            Creo en la nutrición como herramienta de rendimiento, no de castigo.
+          </p>
+          <ul class="about-credentials">
+            <li><span class="cred-icon">✓</span> Licenciatura en Nutrición — UADY</li>
+            <li><span class="cred-icon">✓</span> Especialidad en Nutrición Deportiva</li>
+            <li><span class="cred-icon">✓</span> Certificación ISSN (Nutrición Deportiva)</li>
+            <li><span class="cred-icon">✓</span> Miembro del Colegio de Nutriólogos de Yucatán</li>
+          </ul>
+          <a href="#contacto" class="btn-primary magnetic">Trabaja conmigo</a>
+        </div>
+        <div class="about-right reveal-right">
+          <div class="about-stats-grid">
+            <div class="a-stat">
+              <span class="a-stat-num counter" data-target="500">0</span><span class="a-stat-plus">+</span>
+              <span class="a-stat-label">Pacientes transformados</span>
+            </div>
+            <div class="a-stat">
+              <span class="a-stat-num counter" data-target="8">0</span>
+              <span class="a-stat-label">Años de experiencia</span>
+            </div>
+            <div class="a-stat">
+              <span class="a-stat-num counter" data-target="15">0</span>
+              <span class="a-stat-label">Deportes atendidos</span>
+            </div>
+            <div class="a-stat">
+              <span class="a-stat-num counter" data-target="97">0</span><span class="a-stat-plus">%</span>
+              <span class="a-stat-label">Tasa de satisfacción</span>
+            </div>
+          </div>
+          <div class="about-sports">
+            <span class="sport-tag">Fisicoculturismo</span>
+            <span class="sport-tag">CrossFit</span>
+            <span class="sport-tag">Running</span>
+            <span class="sport-tag">Futbol</span>
+            <span class="sport-tag">Natación</span>
+            <span class="sport-tag">MMA</span>
+            <span class="sport-tag">Ciclismo</span>
+            <span class="sport-tag">Boxeo</span>
+            <span class="sport-tag">Fitness General</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section id="proceso">
+    <div class="container">
+      <div class="section-header reveal-up centered">
+        <span class="section-label">— 03 / Proceso</span>
+        <h2 class="section-title">ASÍ<br><em>FUNCIONA</em></h2>
+      </div>
+      <div class="process-steps">
+        <div class="process-step reveal-up" data-delay="0">
+          <div class="ps-num">01</div>
+          <div class="ps-line"></div>
+          <h3>EVALUACIÓN</h3>
+          <p>Análisis de composición corporal, hábitos y metas. Entendemos tu punto de partida real.</p>
+        </div>
+        <div class="process-step reveal-up" data-delay="150">
+          <div class="ps-num">02</div>
+          <div class="ps-line"></div>
+          <h3>PLANIFICACIÓN</h3>
+          <p>Diseño de tu plan de alimentación personalizado, calculado al detalle para tu objetivo.</p>
+        </div>
+        <div class="process-step reveal-up" data-delay="300">
+          <div class="ps-num">03</div>
+          <div class="ps-line"></div>
+          <h3>EJECUCIÓN</h3>
+          <p>Implementas el plan con soporte continuo. Resolvemos dudas y ajustamos en tiempo real.</p>
+        </div>
+        <div class="process-step reveal-up" data-delay="450">
+          <div class="ps-num">04</div>
+          <div class="ps-line last"></div>
+          <h3>TRANSFORMACIÓN</h3>
+          <p>Resultados medibles, sostenibles y respaldados por ciencia. Tu mejor versión.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="testimonios">
+    <div class="container">
+      <div class="section-header reveal-up centered">
+        <span class="section-label">— 04 / Resultados</span>
+        <h2 class="section-title">LO QUE DICEN<br><em>MIS PACIENTES</em></h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal-up" data-delay="0">
+          <div class="stars">★★★★★</div>
+          <p>"Perdí 12 kg en 4 meses sin sentir que estaba a dieta. Didier me enseñó a comer, no a sufrir. Mis marcas en el gym mejoraron notablemente."</p>
+          <div class="tc-author">
+            <div class="tc-avatar">JM</div>
+            <div>
+              <strong>Juan M.</strong>
+              <span>CrossFit · 28 años</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal-up featured" data-delay="150">
+          <div class="stars">★★★★★</div>
+          <p>"Me preparé para mi primera competencia de fisiculturismo con Didier. El protocolo de peaking fue impecable, llegué en la mejor condición de mi vida."</p>
+          <div class="tc-author">
+            <div class="tc-avatar">KL</div>
+            <div>
+              <strong>Karen L.</strong>
+              <span>Fisiculturismo · 25 años</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal-up" data-delay="300">
+          <div class="stars">★★★★★</div>
+          <p>"Como corredor de maratón necesitaba algo serio. El plan de nutrición de Didier mejoró mi tiempo en 18 minutos. La diferencia fue brutal."</p>
+          <div class="tc-author">
+            <div class="tc-avatar">RA</div>
+            <div>
+              <strong>Roberto A.</strong>
+              <span>Running · 35 años</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-left reveal-left">
+          <span class="section-label">— 05 / Contacto</span>
+          <h2 class="section-title">EMPIEZA<br><em>HOY</em></h2>
+          <p class="contact-sub">Tu primera consulta es el primer paso. Agenda ahora y comencemos a trabajar en tu mejor versión.</p>
+          <div class="contact-items">
+            <div class="contact-item">
+              <span class="ci-icon">📍</span>
+              <div>
+                <strong>Ubicación</strong>
+                <span>Mérida, Yucatán, México</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="ci-icon">📱</span>
+              <div>
+                <strong>WhatsApp</strong>
+                <span>+52 999 000 0000</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <span class="ci-icon">📧</span>
+              <div>
+                <strong>Email</strong>
+                <span>didier@nutriciondeportiva.mx</span>
+              </div>
+            </div>
+          </div>
+          <a href="https://wa.me/529990000000" class="btn-whatsapp magnetic" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Escribir por WhatsApp
+          </a>
+        </div>
+        <div class="contact-right reveal-right">
+          <form class="contact-form" id="contactForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre *</label>
+                <input type="text" placeholder="Tu nombre" required>
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="tel" placeholder="+52 999 000 0000">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+              <label>Objetivo principal *</label>
+              <select required>
+                <option value="" disabled selected>Selecciona tu objetivo</option>
+                <option>Pérdida de grasa</option>
+                <option>Ganancia muscular</option>
+                <option>Recomposición corporal</option>
+                <option>Mejorar rendimiento deportivo</option>
+                <option>Preparación para competencia</option>
+                <option>Nutrición general</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cuéntame sobre ti</label>
+              <textarea placeholder="¿Qué deporte practicas? ¿Cuál es tu mayor reto?" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn-primary full magnetic">Enviar mensaje →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <span class="logo-first">DIDIER</span>
+          <span class="logo-last">ACHACH</span>
+          <span class="logo-tag">NUTRIÓLOGO DEPORTIVO</span>
+        </div>
+        <div class="footer-links">
+          <a href="#servicios">Servicios</a>
+          <a href="#sobre-mi">Sobre mí</a>
+          <a href="#proceso">Proceso</a>
+          <a href="#testimonios">Resultados</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-btn">IG</a>
+          <a href="#" class="social-btn">TK</a>
+          <a href="#" class="social-btn">FB</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Didier Achach · Nutriólogo Deportivo · Mérida, Yucatán</span>
+        <span>Diseñado con propósito</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
