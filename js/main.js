@@ -329,9 +329,9 @@ function triggerHeroReveal() {
   img.src = 'img/logo-notext.png';
 
   const orbitsConfig = [
-    { r: 2.8, speed:  1.1, rx: 15, ry:  0, rz:  0, eCol: 0xe63535, eSz: 0.16 },
-    { r: 3.5, speed: -0.8, rx: 75, ry: 30, rz: 15, eCol: 0xf5de00, eSz: 0.15 },
-    { r: 4.3, speed:  1.0, rx: 45, ry: 60, rz: 45, eCol: 0x4a9e2f, eSz: 0.15 },
+    { r: 2.2, speed:  1.1, rx: 15, ry:  0, rz:  0, eCol: 0xe63535, eSz: 0.16 },
+    { r: 2.8, speed: -0.8, rx: 75, ry: 30, rz: 15, eCol: 0xf5de00, eSz: 0.15 },
+    { r: 3.4, speed:  1.0, rx: 40, ry: 50, rz: 30, eCol: 0x4a9e2f, eSz: 0.15 },
   ];
 
   const electrons = [];
