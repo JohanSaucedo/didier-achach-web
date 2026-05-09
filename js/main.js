@@ -119,7 +119,7 @@
   const ctx = canvas.getContext('2d');
   let W, H, particles = [], mouse = { x: -999, y: -999 };
 
-  const ACCENT = '#e63535';
+  const ACCENT = '#00A86B';
   const ACCENT2 = '#c8a800';
   const COUNT = 72;
   const CONNECT_DIST = 140;

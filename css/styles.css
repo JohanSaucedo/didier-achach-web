@@ -6,8 +6,8 @@
   --bg:        #ffffff;
   --bg2:       #f5f5f5;
   --bg-card:   #fafafa;
-  --accent:    #e63535;
-  --accent-dim: rgba(230, 53, 53, 0.07);
+  --accent:    #00A86B;
+  --accent-dim: rgba(0, 168, 107, 0.07);
   --accent2:   #c8a800;
   --accent3:   #3a8a20;
   --text:      #0a0a0a;
@@ -94,7 +94,7 @@ img { display: block; max-width: 100%; }
 #cursor-follower {
   position: fixed;
   width: 36px; height: 36px;
-  border: 1.5px solid rgba(230,53,53,.4);
+  border: 1.5px solid rgba(0,168,107,.4);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9997;
@@ -172,7 +172,7 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   border-radius: 2px;
   font-weight: 700 !important;
 }
-.nav-cta:hover { background: #c92828 !important; }
+.nav-cta:hover { background: #007a4d !important; }
 
 .menu-toggle {
   display: none;
@@ -575,12 +575,12 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 .sc-num {
   font-family: var(--font-d);
   font-size: 4rem;
-  color: rgba(230,53,53,.07);
+  color: rgba(0,168,107,.07);
   line-height: 1;
   margin-bottom: .5rem;
   transition: color .3s;
 }
-.service-card:hover .sc-num { color: rgba(230,53,53,.15); }
+.service-card:hover .sc-num { color: rgba(0,168,107,.15); }
 
 .sc-icon {
   font-size: 1.75rem;
@@ -610,7 +610,7 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid rgba(230,53,53,.25);
+  border: 1px solid rgba(0,168,107,.25);
   padding: .25rem .6rem;
   border-radius: 2px;
 }
@@ -795,12 +795,12 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 .ps-num {
   font-family: var(--font-d);
   font-size: 5rem;
-  color: rgba(230,53,53,.1);
+  color: rgba(0,168,107,.1);
   line-height: 1;
   margin-bottom: 1.5rem;
   transition: color .3s;
 }
-.process-step:hover .ps-num { color: rgba(230,53,53,.2); }
+.process-step:hover .ps-num { color: rgba(0,168,107,.2); }
 
 .ps-line {
   width: 40px; height: 2px;
@@ -839,10 +839,10 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   border-radius: 4px;
   transition: border-color .3s, transform .3s;
 }
-.testimonial-card:hover { border-color: rgba(230,53,53,.3); transform: translateY(-4px); }
+.testimonial-card:hover { border-color: rgba(0,168,107,.3); transform: translateY(-4px); }
 .testimonial-card.featured {
-  border-color: rgba(230,53,53,.3);
-  background: linear-gradient(135deg, #fff 0%, rgba(230,53,53,.06) 100%);
+  border-color: rgba(0,168,107,.3);
+  background: linear-gradient(135deg, #fff 0%, rgba(0,168,107,.06) 100%);
 }
 
 .stars {
@@ -864,7 +864,7 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 .tc-avatar {
   width: 44px; height: 44px;
   background: var(--accent-dim);
-  border: 1.5px solid rgba(230,53,53,.3);
+  border: 1.5px solid rgba(0,168,107,.3);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-d);
