@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
 
@@ -57,36 +58,41 @@
   <section id="hero">
     <canvas id="hero-canvas"></canvas>
     <div class="hero-inner">
-      <div class="hero-tag reveal-up">
-        <span class="dot"></span> L.N. Didier Achach · Mérida, Yucatán
+      <div class="hero-content">
+        <div class="hero-tag reveal-up">
+          <span class="dot"></span> L.N. Didier Achach · Mérida, Yucatán
+        </div>
+        <h1 class="hero-title reveal-up">
+          HEALTHY<br>
+          <em>&amp; STRONG</em>
+        </h1>
+        <p class="hero-sub reveal-up">
+          Nutrición deportiva personalizada para elevar tu rendimiento,
+          transformar tu composición corporal y alcanzar tu mejor versión.
+        </p>
+        <div class="hero-actions reveal-up">
+          <a href="#contacto" class="btn-primary magnetic">Agenda tu consulta</a>
+          <a href="#servicios" class="btn-ghost magnetic">Ver planes →</a>
+        </div>
+        <div class="hero-stats reveal-up">
+          <div class="h-stat">
+            <span class="h-stat-num" data-target="500">0</span><span>+</span>
+            <span class="h-stat-label">Pacientes</span>
+          </div>
+          <div class="h-stat-divider"></div>
+          <div class="h-stat">
+            <span class="h-stat-num" data-target="8">0</span>
+            <span class="h-stat-label">Años de experiencia</span>
+          </div>
+          <div class="h-stat-divider"></div>
+          <div class="h-stat">
+            <span class="h-stat-num" data-target="97">0</span><span>%</span>
+            <span class="h-stat-label">Tasa de éxito</span>
+          </div>
+        </div>
       </div>
-      <h1 class="hero-title reveal-up">
-        HEALTHY<br>
-        <em>&amp; STRONG</em>
-      </h1>
-      <p class="hero-sub reveal-up">
-        Nutrición deportiva personalizada para elevar tu rendimiento,<br>
-        transformar tu composición corporal y alcanzar tu mejor versión.
-      </p>
-      <div class="hero-actions reveal-up">
-        <a href="#contacto" class="btn-primary magnetic">Agenda tu consulta</a>
-        <a href="#servicios" class="btn-ghost magnetic">Ver planes →</a>
-      </div>
-      <div class="hero-stats reveal-up">
-        <div class="h-stat">
-          <span class="h-stat-num" data-target="500">0</span><span>+</span>
-          <span class="h-stat-label">Pacientes</span>
-        </div>
-        <div class="h-stat-divider"></div>
-        <div class="h-stat">
-          <span class="h-stat-num" data-target="8">0</span>
-          <span class="h-stat-label">Años de experiencia</span>
-        </div>
-        <div class="h-stat-divider"></div>
-        <div class="h-stat">
-          <span class="h-stat-num" data-target="97">0</span><span>%</span>
-          <span class="h-stat-label">Tasa de éxito</span>
-        </div>
+      <div class="hero-3d">
+        <canvas id="atom-canvas"></canvas>
       </div>
     </div>
     <div class="hero-scroll-indicator">

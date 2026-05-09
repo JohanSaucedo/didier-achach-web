@@ -283,6 +283,112 @@ function triggerHeroReveal() {
   counters.forEach(el => observer.observe(el));
 })();
 
+/* ─── ÁTOMO 3D HERO ──────────────────────── */
+(function () {
+  const atomCanvas = document.getElementById('atom-canvas');
+  if (!atomCanvas || typeof THREE === 'undefined') return;
+
+  let W = atomCanvas.offsetWidth || 560;
+  let H = atomCanvas.offsetHeight || 580;
+
+  const renderer = new THREE.WebGLRenderer({ canvas: atomCanvas, antialias: true, alpha: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  camera.position.z = 9;
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+  const lA = new THREE.PointLight(0xe63535, 1.5, 20); lA.position.set(-4, 3, 5); scene.add(lA);
+  const lB = new THREE.PointLight(0xf5de00, 1.2, 20); lB.position.set(4, -3, 5); scene.add(lB);
+
+  const atomGroup  = new THREE.Group();
+  const logoGroup  = new THREE.Group();
+  atomGroup.add(logoGroup);
+  scene.add(atomGroup);
+
+  const img = new Image();
+  img.onload = () => {
+    const tex = new THREE.Texture(img); tex.needsUpdate = true;
+    const logo = new THREE.Mesh(
+      new THREE.PlaneGeometry(3.4, 3.4 * (912 / 1440)),
+      new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
+    );
+    logo.position.z = 0.05; logoGroup.add(logo);
+    [[0.13, 1.12], [0.07, 1.24], [0.03, 1.38]].forEach(([op, s]) => {
+      const gm = new THREE.Mesh(
+        new THREE.PlaneGeometry(3.4 * s, 3.4 * (912 / 1440) * s),
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: op, side: THREE.DoubleSide })
+      );
+      gm.position.z = -(s - 1) * 1.2; logoGroup.add(gm);
+    });
+  };
+  img.src = 'img/logo-notext.png';
+
+  const orbitsConfig = [
+    { r: 3.2, speed:  1.1, rx: 15, ry:  0, rz:  0, eCol: 0xe63535, eSz: 0.14 },
+    { r: 4.2, speed: -0.8, rx: 75, ry: 30, rz: 15, eCol: 0xf5de00, eSz: 0.13 },
+    { r: 5.2, speed:  1.0, rx: 45, ry: 60, rz: 45, eCol: 0x4a9e2f, eSz: 0.13 },
+  ];
+
+  const electrons = [];
+  orbitsConfig.forEach(cfg => {
+    const og = new THREE.Group();
+    og.rotation.x = THREE.MathUtils.degToRad(cfg.rx);
+    og.rotation.y = THREE.MathUtils.degToRad(cfg.ry);
+    og.rotation.z = THREE.MathUtils.degToRad(cfg.rz);
+    atomGroup.add(og);
+
+    const eMesh = new THREE.Mesh(new THREE.SphereGeometry(cfg.eSz, 16, 16),
+      new THREE.MeshBasicMaterial({ color: cfg.eCol }));
+    const hMesh = new THREE.Mesh(new THREE.SphereGeometry(cfg.eSz * 2.2, 12, 12),
+      new THREE.MeshBasicMaterial({ color: cfg.eCol, transparent: true, opacity: 0.22 }));
+    og.add(eMesh); og.add(hMesh);
+
+    const trail = [];
+    for (let i = 1; i <= 5; i++) {
+      const tm = new THREE.Mesh(new THREE.SphereGeometry(cfg.eSz * (1 - 0.15 * i), 8, 8),
+        new THREE.MeshBasicMaterial({ color: cfg.eCol, transparent: true, opacity: 0.55 - 0.1 * i }));
+      og.add(tm); trail.push(tm);
+    }
+    electrons.push({ og, eMesh, hMesh, trail, r: cfg.r, speed: cfg.speed, angle: Math.random() * Math.PI * 2 });
+  });
+
+  let tx = 0, ty = 0, cx = 0, cy = 0, t = 0;
+  document.addEventListener('mousemove', e => {
+    tx = (e.clientX / window.innerWidth  - 0.5) * 1.4;
+    ty = (e.clientY / window.innerHeight - 0.5) * 0.9;
+  });
+
+  const ro = new ResizeObserver(() => {
+    W = atomCanvas.offsetWidth; H = atomCanvas.offsetHeight;
+    camera.aspect = W / H; camera.updateProjectionMatrix();
+    renderer.setSize(W, H);
+  });
+  ro.observe(atomCanvas);
+
+  (function loop() {
+    requestAnimationFrame(loop); t += 0.012;
+    cx += (tx - cx) * 0.05; cy += (ty - cy) * 0.05;
+    atomGroup.rotation.y = cx; atomGroup.rotation.x = -cy * 0.6;
+    logoGroup.position.y = Math.sin(t * 0.7) * 0.08;
+    electrons.forEach(e => {
+      e.angle += e.speed * 0.012;
+      const x = Math.cos(e.angle) * e.r, y = Math.sin(e.angle) * e.r;
+      e.eMesh.position.set(x, y, 0); e.hMesh.position.set(x, y, 0);
+      e.trail.forEach((tm, i) => {
+        const a = e.angle - (i + 1) * 0.12 * Math.sign(e.speed);
+        tm.position.set(Math.cos(a) * e.r, Math.sin(a) * e.r, 0);
+      });
+    });
+    lA.position.x = Math.cos(t * 0.3) * 6; lA.position.y = Math.sin(t * 0.25) * 5;
+    lB.position.x = Math.cos(t * 0.25 + Math.PI) * 6;
+    renderer.render(scene, camera);
+  })();
+})();
+
 /* ─── CONTACT FORM ────────────────────────── */
 (function () {
   const form = document.getElementById('contactForm');
