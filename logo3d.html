@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthy & Strong — Logo 3D</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #060606;
+      overflow: hidden;
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    canvas { display: block; }
+    #info {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .8rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div id="info">Mueve el cursor para rotar · Scroll para zoom</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script>
+    const canvas = document.getElementById('c');
+    let W = window.innerWidth, H = window.innerHeight;
+
+    /* ── RENDERER ─────────────────────────────── */
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+
+    /* ── SCENE / CAMERA ───────────────────────── */
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+    camera.position.z = 5;
+
+    /* ── LIGHTING ─────────────────────────────── */
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+
+    const redLight  = new THREE.PointLight(0xe63535, 3, 12);
+    redLight.position.set(-3, 2, 3);
+    scene.add(redLight);
+
+    const yellowLight = new THREE.PointLight(0xf5de00, 2, 12);
+    yellowLight.position.set(3, -2, 3);
+    scene.add(yellowLight);
+
+    const greenLight = new THREE.PointLight(0x4a9e2f, 1.5, 10);
+    greenLight.position.set(0, 3, 2);
+    scene.add(greenLight);
+
+    /* ── LOGO GROUP ───────────────────────────── */
+    const logoGroup = new THREE.Group();
+    scene.add(logoGroup);
+
+    const loader = new THREE.TextureLoader();
+    loader.load('img/logo-transparent.png', (tex) => {
+      tex.encoding = THREE.sRGBEncoding;
+
+      // Plano principal del logo
+      const geo  = new THREE.PlaneGeometry(4.2, 4.2);
+      const mat  = new THREE.MeshStandardMaterial({
+        map: tex,
+        transparent: true,
+        side: THREE.DoubleSide,
+        roughness: 0.4,
+        metalness: 0.1,
+      });
+      const logo = new THREE.Mesh(geo, mat);
+      logo.position.z = 0.05;
+      logoGroup.add(logo);
+
+      // Capa de brillo/glow detrás
+      const glowMat = new THREE.MeshBasicMaterial({
+        map: tex,
+        transparent: true,
+        opacity: 0.12,
+        side: THREE.DoubleSide,
+      });
+      const glow = new THREE.Mesh(new THREE.PlaneGeometry(4.6, 4.6), glowMat);
+      glow.position.z = -0.15;
+      logoGroup.add(glow);
+
+      // Segunda capa de glow más difusa
+      const glow2Mat = new THREE.MeshBasicMaterial({
+        map: tex,
+        transparent: true,
+        opacity: 0.06,
+        side: THREE.DoubleSide,
+      });
+      const glow2 = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 5.2), glow2Mat);
+      glow2.position.z = -0.35;
+      logoGroup.add(glow2);
+    });
+
+    /* ── PARTÍCULAS ───────────────────────────── */
+    const PARTICLE_COUNT = 220;
+    const positions  = new Float32Array(PARTICLE_COUNT * 3);
+    const colorsAttr = new Float32Array(PARTICLE_COUNT * 3);
+    const speeds     = new Float32Array(PARTICLE_COUNT);
+
+    const palette = [
+      [0.90, 0.20, 0.20],   // rojo
+      [0.96, 0.87, 0.00],   // amarillo
+      [0.29, 0.62, 0.18],   // verde lima
+      [0.52, 0.10, 0.44],   // morado (cereza)
+      [1.00, 0.80, 0.30],   // naranja suave
+    ];
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const r = 3 + Math.random() * 5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi   = Math.acos(2 * Math.random() - 1);
+      positions[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+      positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      positions[i*3+2] = r * Math.cos(phi);
+      speeds[i] = 0.002 + Math.random() * 0.004;
+      const c = palette[Math.floor(Math.random() * palette.length)];
+      colorsAttr[i*3] = c[0]; colorsAttr[i*3+1] = c[1]; colorsAttr[i*3+2] = c[2];
+    }
+
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    pGeo.setAttribute('color',    new THREE.BufferAttribute(colorsAttr, 3));
+
+    const pMat = new THREE.PointsMaterial({
+      size: 0.06,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.85,
+      sizeAttenuation: true,
+    });
+
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    /* ── ANILLO DECORATIVO ────────────────────── */
+    const ringGeo = new THREE.TorusGeometry(3.2, 0.008, 8, 120);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xe63535, transparent: true, opacity: 0.25 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 4;
+    scene.add(ring);
+
+    const ring2Geo = new THREE.TorusGeometry(3.6, 0.005, 8, 120);
+    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xf5de00, transparent: true, opacity: 0.15 });
+    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    ring2.rotation.x = -Math.PI / 5;
+    ring2.rotation.y =  Math.PI / 6;
+    scene.add(ring2);
+
+    /* ── MOUSE ────────────────────────────────── */
+    let targetX = 0, targetY = 0;
+    document.addEventListener('mousemove', e => {
+      targetX = (e.clientX / W - 0.5) * 1.2;
+      targetY = (e.clientY / H - 0.5) * 0.8;
+    });
+
+    document.addEventListener('wheel', e => {
+      camera.position.z = Math.max(2.5, Math.min(9, camera.position.z + e.deltaY * 0.005));
+    }, { passive: true });
+
+    /* ── RESIZE ───────────────────────────────── */
+    window.addEventListener('resize', () => {
+      W = window.innerWidth; H = window.innerHeight;
+      camera.aspect = W / H;
+      camera.updateProjectionMatrix();
+      renderer.setSize(W, H);
+    });
+
+    /* ── ANIMACIÓN ────────────────────────────── */
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.008;
+
+      // Logo sigue el cursor con inercia
+      logoGroup.rotation.y += (targetX - logoGroup.rotation.y) * 0.06;
+      logoGroup.rotation.x += (-targetY - logoGroup.rotation.x) * 0.06;
+
+      // Flotación suave
+      logoGroup.position.y = Math.sin(t * 0.7) * 0.12;
+
+      // Luces orbitando
+      redLight.position.x = Math.cos(t * 0.5) * 4;
+      redLight.position.y = Math.sin(t * 0.3) * 3;
+      yellowLight.position.x = Math.cos(t * 0.4 + Math.PI) * 4;
+      yellowLight.position.y = Math.sin(t * 0.6 + 1) * 3;
+
+      // Partículas girando lento
+      particles.rotation.y = t * 0.04;
+      particles.rotation.x = t * 0.015;
+
+      // Anillos girando
+      ring.rotation.y  = t * 0.12;
+      ring2.rotation.z = t * 0.08;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
