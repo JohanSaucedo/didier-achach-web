@@ -312,15 +312,16 @@ function triggerHeroReveal() {
   const img = new Image();
   img.onload = () => {
     const tex = new THREE.Texture(img); tex.needsUpdate = true;
+    const logoSize = 5.0;
     const logo = new THREE.Mesh(
-      new THREE.PlaneGeometry(3.4, 3.4 * (912 / 1440)),
-      new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, depthWrite: false })
+      new THREE.PlaneGeometry(logoSize, logoSize * (912 / 1440)),
+      new THREE.MeshBasicMaterial({ map: tex, transparent: true, alphaTest: 0.05, side: THREE.DoubleSide, depthWrite: false })
     );
     logo.position.z = 0.05; logoGroup.add(logo);
-    [[0.13, 1.12], [0.07, 1.24], [0.03, 1.38]].forEach(([op, s]) => {
+    [[0.12, 1.1], [0.06, 1.22], [0.03, 1.36]].forEach(([op, s]) => {
       const gm = new THREE.Mesh(
-        new THREE.PlaneGeometry(3.4 * s, 3.4 * (912 / 1440) * s),
-        new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: op, side: THREE.DoubleSide, depthWrite: false })
+        new THREE.PlaneGeometry(logoSize * s, logoSize * (912 / 1440) * s),
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, alphaTest: 0.01, opacity: op, side: THREE.DoubleSide, depthWrite: false })
       );
       gm.position.z = -(s - 1) * 1.2; logoGroup.add(gm);
     });
@@ -328,9 +329,9 @@ function triggerHeroReveal() {
   img.src = 'img/logo-notext.png';
 
   const orbitsConfig = [
-    { r: 3.2, speed:  1.1, rx: 15, ry:  0, rz:  0, eCol: 0xe63535, eSz: 0.14 },
-    { r: 4.2, speed: -0.8, rx: 75, ry: 30, rz: 15, eCol: 0xf5de00, eSz: 0.13 },
-    { r: 5.2, speed:  1.0, rx: 45, ry: 60, rz: 45, eCol: 0x4a9e2f, eSz: 0.13 },
+    { r: 2.8, speed:  1.1, rx: 15, ry:  0, rz:  0, eCol: 0xe63535, eSz: 0.16 },
+    { r: 3.5, speed: -0.8, rx: 75, ry: 30, rz: 15, eCol: 0xf5de00, eSz: 0.15 },
+    { r: 4.3, speed:  1.0, rx: 45, ry: 60, rz: 45, eCol: 0x4a9e2f, eSz: 0.15 },
   ];
 
   const electrons = [];
