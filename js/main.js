@@ -92,8 +92,10 @@
 /* ─── HEADER SCROLL ───────────────────────── */
 (function () {
   const header = document.getElementById('header');
+  const hero   = document.getElementById('hero');
   window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 60);
+    const threshold = hero ? hero.offsetHeight - header.offsetHeight : 60;
+    header.classList.toggle('scrolled', window.scrollY > threshold);
   }, { passive: true });
 })();
 
@@ -112,127 +114,49 @@
   });
 })();
 
-/* ─── HERO CANVAS — PARTICLE NETWORK ─────── */
+/* ─── HERO PLAY-ONCE ─────────────────────────── */
 (function () {
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [], mouse = { x: -999, y: -999 };
 
-  const ACCENT = '#00A86B';
-  const ACCENT2 = '#c8a800';
-  const COUNT = 72;
-  const CONNECT_DIST = 140;
-  const REPEL_DIST = 160;
+  const ctx      = canvas.getContext('2d');
+  const TOTAL    = 286;
+  const FRAME_MS = 41; // ~24fps
+  const SRC_W    = 1280, SRC_H = 720;
 
-  class Particle {
-    constructor() { this.reset(true); }
-    reset(init) {
-      this.x  = Math.random() * W;
-      this.y  = init ? Math.random() * H : -10;
-      this.vx = (Math.random() - .5) * .45;
-      this.vy = (Math.random() - .5) * .45;
-      this.r  = Math.random() * 2 + 1;
-      this.baseR = this.r;
-      this.alpha = Math.random() * .5 + .3;
-      this.pulse = Math.random() * Math.PI * 2;
-      this.pulseSpeed = Math.random() * .02 + .008;
-      this.color = Math.random() > .15 ? ACCENT : ACCENT2;
-      this.energy = Math.random() > .8;
-    }
-    update() {
-      this.pulse += this.pulseSpeed;
-      if (this.energy) {
-        this.r = this.baseR + Math.sin(this.pulse) * 1.2;
+  canvas.width  = SRC_W;
+  canvas.height = SRC_H;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+
+  const images = [];
+  let loaded   = 0;
+
+  for (let i = 0; i < TOTAL; i++) {
+    const img = new Image();
+    img.src   = `img/frames/frame_${String(i).padStart(3,'0')}_delay-0.041s.jpg`;
+    img.onload = () => {
+      if (++loaded === TOTAL) {
+        canvas.classList.add('ready');
+        ctx.drawImage(images[0], 0, 0, SRC_W, SRC_H); // muestra primer frame
+        requestAnimationFrame(tick);
       }
-
-      const dx = this.x - mouse.x;
-      const dy = this.y - mouse.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < REPEL_DIST && dist > 0) {
-        const force = (REPEL_DIST - dist) / REPEL_DIST;
-        this.x += (dx / dist) * force * 2.5;
-        this.y += (dy / dist) * force * 2.5;
-      }
-
-      this.x += this.vx; this.y += this.vy;
-      if (this.x < 0) this.x = W;
-      if (this.x > W) this.x = 0;
-      if (this.y < 0) this.y = H;
-      if (this.y > H) this.y = 0;
-    }
-    draw() {
-      ctx.save();
-      ctx.globalAlpha = this.alpha;
-
-      if (this.energy) {
-        ctx.shadowBlur = 14; ctx.shadowColor = this.color;
-      }
-
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.fill();
-      ctx.restore();
-    }
+    };
+    images.push(img);
   }
 
-  function init() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-    particles = Array.from({ length: COUNT }, () => new Particle());
-  }
+  let frame    = 0;
+  let lastTime = 0;
 
-  function connect() {
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const a = particles[i], b = particles[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < CONNECT_DIST) {
-          const alpha = (1 - dist / CONNECT_DIST) * .22;
-          ctx.save();
-          ctx.globalAlpha = alpha;
-          ctx.strokeStyle = ACCENT;
-          ctx.lineWidth = .8;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-          ctx.restore();
-        }
-      }
+  function tick(ts) {
+    if (frame >= TOTAL - 1) return; // congelado en último frame
+    if (ts - lastTime >= FRAME_MS) {
+      frame++;
+      ctx.drawImage(images[frame], 0, 0, SRC_W, SRC_H);
+      lastTime = ts;
     }
+    requestAnimationFrame(tick);
   }
-
-  let tick = 0;
-  function loop() {
-    ctx.clearRect(0, 0, W, H);
-
-    // subtle radial glow center
-    if (tick % 3 === 0) {
-      const grad = ctx.createRadialGradient(W*.5, H*.5, 0, W*.5, H*.5, W*.45);
-      grad.addColorStop(0, 'rgba(230,53,53,.025)');
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-    }
-
-    connect();
-    particles.forEach(p => { p.update(); p.draw(); });
-    tick++;
-    requestAnimationFrame(loop);
-  }
-
-  canvas.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-  });
-  canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
-
-  window.addEventListener('resize', init);
-  init(); loop();
 })();
 
 /* ─── HERO REVEAL ─────────────────────────── */

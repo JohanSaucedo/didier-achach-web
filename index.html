@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=4">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
@@ -56,61 +56,59 @@
 
   <!-- HERO -->
   <section id="hero">
-    <canvas id="hero-canvas"></canvas>
+    <div class="hero-sticky">
 
-    <!-- Logo flotante absoluto -->
-    <div class="hero-logo-wrap">
-      <img src="img/logo-full.png" alt="" class="hero-logo-float">
-    </div>
-
-    <div class="hero-inner">
-      <div class="hero-content">
-
-        <div class="hero-eyebrow reveal-up">
-          <span class="eyebrow-line"></span>
-          <span class="eyebrow-text">NUTRIÓLOGO DEPORTIVO CERTIFICADO</span>
-        </div>
-
-        <h1 class="hero-title reveal-up">
-          <span class="ht-outline">HEALTHY</span>
-          <em>&amp; STRONG</em>
-        </h1>
-
-        <div class="hero-name reveal-up">L.N. DIDIER ACHACH <span class="hero-name-sep">·</span> MÉRIDA, YUCATÁN</div>
-
-        <p class="hero-sub reveal-up">
-          Planes de nutrición que funcionan — diseñados para atletas,<br>
-          deportistas y personas que exigen resultados reales.
-        </p>
-
-        <div class="hero-actions reveal-up">
-          <a href="#contacto" class="btn-primary magnetic">Agenda tu consulta</a>
-          <a href="#servicios" class="btn-ghost magnetic">Ver planes →</a>
-        </div>
-
-        <div class="hero-stats reveal-up">
-          <div class="h-stat">
-            <span class="h-stat-num" data-target="500">0</span><span class="h-stat-plus">+</span>
-            <span class="h-stat-label">Pacientes</span>
-          </div>
-          <div class="h-stat-divider"></div>
-          <div class="h-stat">
-            <span class="h-stat-num" data-target="8">0</span>
-            <span class="h-stat-label">Años exp.</span>
-          </div>
-          <div class="h-stat-divider"></div>
-          <div class="h-stat">
-            <span class="h-stat-num" data-target="97">0</span><span class="h-stat-plus">%</span>
-            <span class="h-stat-label">Tasa de éxito</span>
-          </div>
-        </div>
-
+      <!-- Layer 1: Giant background words -->
+      <div class="hero-words" aria-hidden="true">
+        <span class="hw-l">HEALTHY</span>
+        <span class="hw-r">STRONG</span>
       </div>
-    </div>
 
-    <div class="hero-scroll-indicator">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
+      <!-- Layer 2: Frame animation -->
+      <canvas id="hero-canvas"></canvas>
+
+      <!-- Layer 3: UI content -->
+      <div class="hero-ui">
+        <div class="hero-ui-left">
+          <div class="hero-eyebrow reveal-up">
+            <span class="eyebrow-line"></span>
+            <span class="eyebrow-text">NUTRIÓLOGO DEPORTIVO CERTIFICADO</span>
+          </div>
+          <div class="hero-name reveal-up">
+            L.N. DIDIER ACHACH <span class="hsep">·</span> MÉRIDA, YUC.
+          </div>
+          <p class="hero-tagline reveal-up">
+            Planes de nutrición que funcionan — diseñados para atletas,
+            deportistas y personas que exigen resultados reales.
+          </p>
+          <div class="hero-ui-right reveal-up">
+            <a href="#contacto" class="hero-cta-1 magnetic">Agenda tu consulta</a>
+            <a href="#servicios" class="hero-cta-2 magnetic">Ver planes →</a>
+            <div class="hsr">
+              <div class="hsr-item">
+                <span class="hsr-num h-stat-num" data-target="500">0</span><span class="hsr-plus">+</span>
+                <span class="hsr-label">Pacientes</span>
+              </div>
+              <span class="hsr-sep"></span>
+              <div class="hsr-item">
+                <span class="hsr-num h-stat-num" data-target="8">0</span>
+                <span class="hsr-label">Años</span>
+              </div>
+              <span class="hsr-sep"></span>
+              <div class="hsr-item">
+                <span class="hsr-num h-stat-num" data-target="97">0</span><span class="hsr-plus">%</span>
+                <span class="hsr-label">Éxito</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+
     </div>
   </section>
 
@@ -156,7 +154,7 @@
           <div class="sc-icon">⚡</div>
           <h3>Evaluación Inicial</h3>
           <p>Análisis completo de composición corporal, hábitos alimenticios y objetivos. La base de todo cambio real.</p>
-          <div class="sc-tags"><span>Bioimpedancia</span><span>Historial clínico</span></div>
+          <div class="sc-tags"><span>Báscula InBody</span><span>Historial clínico</span></div>
         </div>
         <div class="service-card reveal-up" data-delay="100">
           <div class="sc-num">02</div>
@@ -427,6 +425,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=4"></script>
 </body>
 </html>
