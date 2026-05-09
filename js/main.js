@@ -120,7 +120,7 @@
   let W, H, particles = [], mouse = { x: -999, y: -999 };
 
   const ACCENT = '#e63535';
-  const ACCENT2 = '#f5de00';
+  const ACCENT2 = '#c8a800';
   const COUNT = 72;
   const CONNECT_DIST = 140;
   const REPEL_DIST = 160;
