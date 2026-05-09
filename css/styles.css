@@ -618,8 +618,48 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 /* ── SOBRE MÍ ──────────────────────────────── */
 #sobre-mi {
   padding: 8rem 0;
-  background: var(--bg2);
+  background-image: url('../img/hero-bg.jpg');
+  background-image: image-set(
+    url('../img/hero-bg.webp') type('image/webp'),
+    url('../img/hero-bg.jpg')  type('image/jpeg')
+  );
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
   position: relative; z-index: 2;
+}
+#sobre-mi::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(6, 16, 26, 0.72);
+  z-index: 0;
+}
+#sobre-mi .container {
+  position: relative;
+  z-index: 1;
+}
+#sobre-mi .section-title {
+  color: #fff;
+}
+#sobre-mi .about-bio {
+  color: rgba(255,255,255,.75);
+}
+#sobre-mi .about-credentials li {
+  color: rgba(255,255,255,.75);
+  border-bottom-color: rgba(255,255,255,.15);
+}
+#sobre-mi .about-stats-grid {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.15);
+}
+#sobre-mi .a-stat {
+  background: rgba(255,255,255,.04);
+}
+#sobre-mi .a-stat-label {
+  color: rgba(255,255,255,.65);
+}
+#sobre-mi .about-right {
+  align-self: center;
 }
 .about-grid {
   display: grid;
