@@ -327,54 +327,60 @@ camera.position.z=6;
 scene.add(new THREE.AmbientLight(0xffffff,.5));
 window.addEventListener('resize',()=>{W=innerWidth;H=innerHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);});
 
-let particles, positions, targets, colors, velocities, assembled=false, assembling=false;
+let particles,positions,targets,colors,velocities,assembled=false,assembling=false;
 
 function explode(){
   assembled=false;assembling=false;
   const N=positions.length/3;
   for(let i=0;i<N;i++){
-    velocities[i*3]=(Math.random()-.5)*0.35;
-    velocities[i*3+1]=(Math.random()-.5)*0.35;
-    velocities[i*3+2]=(Math.random()-.5)*0.25;
+    velocities[i*3]=(Math.random()-.5)*.4;
+    velocities[i*3+1]=(Math.random()-.5)*.4;
+    velocities[i*3+2]=(Math.random()-.5)*.3;
   }
-  setTimeout(()=>{assembling=true;},1200);
+  setTimeout(()=>{assembling=true;},1400);
 }
 document.addEventListener('click',()=>{if(assembled)explode();});
 
 const img=new Image();
 img.onload=()=>{
-  const OW=140,OH=Math.round(140*AR);
+  // Muestreo de alta densidad: 320px de ancho = ~25k particulas
+  const OW=320, OH=Math.round(320*AR);
   const oc=document.createElement('canvas');oc.width=OW;oc.height=OH;
   const ctx=oc.getContext('2d');ctx.drawImage(img,0,0,OW,OH);
   const px=ctx.getImageData(0,0,OW,OH).data;
   const pts=[];
   for(let y=0;y<OH;y++){for(let x=0;x<OW;x++){
     const i=(y*OW+x)*4;
-    if(px[i+3]>45)pts.push({
-      tx:(x/OW-.5)*5.2,ty:-(y/OH-.5)*3.3,tz:0,
-      r:px[i]/255,g:px[i+1]/255,b:px[i+2]/255
-    });
+    if(px[i+3]>40){
+      let r=px[i]/255, g=px[i+1]/255, b=px[i+2]/255;
+      // Pixeles oscuros (mancuerna/contornos) -> blanco para que se vean
+      if(r<.25 && g<.25 && b<.25){ r=.95; g=.95; b=.95; }
+      pts.push({tx:(x/OW-.5)*5.8, ty:-(y/OH-.5)*3.7, tz:0, r, g, b});
+    }
   }}
   const N=pts.length;
-  positions=new Float32Array(N*3);
-  targets=new Float32Array(N*3);
-  colors=new Float32Array(N*3);
+  positions =new Float32Array(N*3);
+  targets   =new Float32Array(N*3);
+  colors    =new Float32Array(N*3);
   velocities=new Float32Array(N*3);
   for(let i=0;i<N;i++){
     const r=4+Math.random()*6,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
-    positions[i*3]=r*Math.sin(ph)*Math.cos(th);
+    positions[i*3]  =r*Math.sin(ph)*Math.cos(th);
     positions[i*3+1]=r*Math.sin(ph)*Math.sin(th);
     positions[i*3+2]=r*Math.cos(ph);
-    targets[i*3]=pts[i].tx;targets[i*3+1]=pts[i].ty;targets[i*3+2]=pts[i].tz;
-    colors[i*3]=pts[i].r;colors[i*3+1]=pts[i].g;colors[i*3+2]=pts[i].b;
+    targets[i*3]=pts[i].tx; targets[i*3+1]=pts[i].ty; targets[i*3+2]=pts[i].tz;
+    colors[i*3]=pts[i].r;   colors[i*3+1]=pts[i].g;   colors[i*3+2]=pts[i].b;
   }
   const geo=new THREE.BufferGeometry();
   geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
-  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
-  particles=new THREE.Points(geo,new THREE.PointsMaterial({size:.055,vertexColors:true,transparent:true,opacity:.95}));
+  geo.setAttribute('color',   new THREE.BufferAttribute(colors,3));
+  particles=new THREE.Points(geo,new THREE.PointsMaterial({
+    size:.022, vertexColors:true, transparent:true, opacity:1.0,
+    sizeAttenuation:true, depthWrite:false
+  }));
   scene.add(particles);
-  setTimeout(()=>{assembling=true;},300);
-  let tx=0,ty=0,cx=0,cy=0,t=0,hint=true;
+  setTimeout(()=>{assembling=true;},400);
+  let tx=0,ty=0,cx=0,cy=0,t=0;
   document.addEventListener('mousemove',e=>{tx=(e.clientX/W-.5)*.8;ty=(e.clientY/H-.5)*.5;});
   (function loop(){requestAnimationFrame(loop);t+=.012;
     cx+=(tx-cx)*.04;cy+=(ty-cy)*.04;
@@ -382,17 +388,18 @@ img.onload=()=>{
     const N2=pos.length/3;let done=0;
     for(let i=0;i<N2;i++){
       if(assembling){
-        pos[i*3]+=(targets[i*3]-pos[i*3])*.055;
-        pos[i*3+1]+=(targets[i*3+1]-pos[i*3+1])*.055;
-        pos[i*3+2]+=(targets[i*3+2]-pos[i*3+2])*.055;
-        const dx=Math.abs(pos[i*3]-targets[i*3]);
-        if(dx<.02)done++;
+        pos[i*3]  +=(targets[i*3]  -pos[i*3]  )*.06;
+        pos[i*3+1]+=(targets[i*3+1]-pos[i*3+1])*.06;
+        pos[i*3+2]+=(targets[i*3+2]-pos[i*3+2])*.06;
+        if(Math.abs(pos[i*3]-targets[i*3])<.015)done++;
       } else {
-        pos[i*3]+=velocities[i*3];pos[i*3+1]+=velocities[i*3+1];pos[i*3+2]+=velocities[i*3+2];
+        pos[i*3]  +=velocities[i*3];
+        pos[i*3+1]+=velocities[i*3+1];
+        pos[i*3+2]+=velocities[i*3+2];
         velocities[i*3]*=.97;velocities[i*3+1]*=.97;velocities[i*3+2]*=.97;
       }
     }
-    if(done>N2*.96&&assembling&&!assembled){assembled=true;assembling=false;}
+    if(done>N2*.97&&assembling&&!assembled){assembled=true;assembling=false;}
     particles.geometry.attributes.position.needsUpdate=true;
     if(assembled){
       particles.position.y=Math.sin(t*.6)*.1;
@@ -414,7 +421,7 @@ files = {
   'logo3d-B-holografico.html': page('Opción B — Holográfico','B · Holográfico','#000819',JS_B),
   'logo3d-C-energia.html':     page('Opción C — Energía','C · Shaders de energía','#0a0200',JS_C),
   'logo3d-D-agua.html':        page('Opción D — Agua','D · Reflejo en agua','#010a12',JS_D),
-  'logo3d-E-particulas.html':  page('Opción E — Partículas','E · Partículas (click para explotar)','#060606',JS_E),
+  'logo3d-E-particulas.html':  page('Opción E — Partículas','E · Partículas (click para explotar)','#ffffff',JS_E),
 }
 
 for name, content in files.items():
