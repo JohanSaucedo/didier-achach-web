@@ -314,13 +314,13 @@ function triggerHeroReveal() {
     const tex = new THREE.Texture(img); tex.needsUpdate = true;
     const logo = new THREE.Mesh(
       new THREE.PlaneGeometry(3.4, 3.4 * (912 / 1440)),
-      new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
+      new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, depthWrite: false })
     );
     logo.position.z = 0.05; logoGroup.add(logo);
     [[0.13, 1.12], [0.07, 1.24], [0.03, 1.38]].forEach(([op, s]) => {
       const gm = new THREE.Mesh(
         new THREE.PlaneGeometry(3.4 * s, 3.4 * (912 / 1440) * s),
-        new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: op, side: THREE.DoubleSide })
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: op, side: THREE.DoubleSide, depthWrite: false })
       );
       gm.position.z = -(s - 1) * 1.2; logoGroup.add(gm);
     });
