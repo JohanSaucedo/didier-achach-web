@@ -343,15 +343,20 @@ function triggerHeroReveal() {
     atomGroup.add(og);
 
     const eMesh = new THREE.Mesh(new THREE.SphereGeometry(cfg.eSz, 16, 16),
-      new THREE.MeshBasicMaterial({ color: cfg.eCol }));
+      new THREE.MeshBasicMaterial({ color: cfg.eCol, depthTest: false }));
+    eMesh.renderOrder = 10;
+
     const hMesh = new THREE.Mesh(new THREE.SphereGeometry(cfg.eSz * 2.2, 12, 12),
-      new THREE.MeshBasicMaterial({ color: cfg.eCol, transparent: true, opacity: 0.22 }));
+      new THREE.MeshBasicMaterial({ color: cfg.eCol, transparent: true, opacity: 0.22, depthTest: false }));
+    hMesh.renderOrder = 10;
+
     og.add(eMesh); og.add(hMesh);
 
     const trail = [];
     for (let i = 1; i <= 5; i++) {
       const tm = new THREE.Mesh(new THREE.SphereGeometry(cfg.eSz * (1 - 0.15 * i), 8, 8),
-        new THREE.MeshBasicMaterial({ color: cfg.eCol, transparent: true, opacity: 0.55 - 0.1 * i }));
+        new THREE.MeshBasicMaterial({ color: cfg.eCol, transparent: true, opacity: 0.55 - 0.1 * i, depthTest: false }));
+      tm.renderOrder = 10;
       og.add(tm); trail.push(tm);
     }
     electrons.push({ og, eMesh, hMesh, trail, r: cfg.r, speed: cfg.speed, angle: Math.random() * Math.PI * 2 });
