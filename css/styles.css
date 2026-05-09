@@ -128,11 +128,8 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 .logo-img {
   height: 52px;
   width: auto;
-  filter: brightness(0) invert(1);
+  filter: drop-shadow(0 0 6px rgba(0,0,0,.6)) brightness(1.05);
   transition: filter .3s;
-}
-#header.scrolled .logo-img {
-  filter: none;
 }
 .logo-first {
   font-family: var(--font-d);
@@ -801,10 +798,10 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 }
 .footer-logo { display: flex; align-items: center; }
 .footer-logo-img {
-  height: 72px;
+  height: 80px;
   width: auto;
-  filter: brightness(0) invert(1);
-  opacity: .85;
+  filter: drop-shadow(0 0 8px rgba(0,0,0,.8)) brightness(1.05);
+  opacity: .9;
 }
 .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
 .footer-links a {
