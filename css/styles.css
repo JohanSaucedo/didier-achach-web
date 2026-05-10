@@ -1328,6 +1328,92 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   letter-spacing: .05em;
 }
 
+/* ── HORIZONTAL SCROLL TRACK ──────────────── */
+.h-track {
+  position: relative;
+  height: 300vh;
+}
+.h-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg);
+}
+.h-flex {
+  display: flex;
+  height: 100%;
+  width: 300vw;
+}
+.h-flex > section {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+/* Tighter padding inside horizontal panels */
+.h-flex #sobre-mi  { padding: 4rem 0 2rem; background: var(--bg); }
+.h-flex #proceso   { padding: 4rem 0; }
+.h-flex #testimonios { padding: 4rem 0; }
+.h-flex .about-grid  { gap: 2.5rem; }
+.h-flex .about-photo { max-height: 340px; }
+.h-flex .section-title { margin-bottom: 1.5rem; }
+.h-flex .process-steps { border: 1.5px solid var(--border); }
+
+/* Panel label: show current panel indicator */
+.h-progress {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: .5rem;
+  z-index: 20;
+}
+.h-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background .3s, transform .3s;
+}
+.h-dot.active {
+  background: var(--accent);
+  transform: scale(1.4);
+}
+
+/* Scroll right hint */
+.h-scroll-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  transition: opacity .4s ease;
+  pointer-events: none;
+  z-index: 20;
+}
+.h-scroll-hint span {
+  font-family: var(--font-l);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .25em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.h-hint-arrow {
+  font-size: .9rem;
+  color: var(--accent);
+  animation: h-arrow-pulse 1.4s ease-in-out infinite;
+}
+@keyframes h-arrow-pulse {
+  0%,100% { transform: translateX(0); opacity: .6; }
+  50%      { transform: translateX(5px); opacity: 1; }
+}
+
 /* ── ANIMATIONS ────────────────────────────── */
 .reveal-up, .reveal-left, .reveal-right {
   opacity: 0;
@@ -1352,6 +1438,20 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   .hero-inner { grid-template-columns: 1fr; }
   .hero-3d { height: 380px; }
   .hero-title { font-size: clamp(3.5rem, 10vw, 7rem); }
+}
+
+@media (max-width: 900px) {
+  /* Disable horizontal scroll on small screens */
+  .h-track  { height: auto; }
+  .h-sticky { position: relative; height: auto; overflow: visible; }
+  .h-flex   { display: block; width: 100%; transform: none !important; }
+  .h-flex > section { width: 100%; height: auto; overflow: visible; }
+  .h-flex #sobre-mi,
+  .h-flex #proceso,
+  .h-flex #testimonios { padding: 8rem 0; }
+  .h-flex .about-photo { max-height: 480px; }
+  .h-flex .section-title { margin-bottom: 3rem; }
+  .h-progress { display: none; }
 }
 
 @media (max-width: 900px) {

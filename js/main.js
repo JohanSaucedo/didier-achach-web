@@ -196,7 +196,7 @@ function triggerGooeyWords() {
   }, { threshold: .12, rootMargin: '0px 0px -60px 0px' });
 
   document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
-    if (!el.closest('#hero')) observer.observe(el);
+    if (!el.closest('#hero') && !el.closest('.h-flex')) observer.observe(el);
   });
 })();
 
@@ -465,6 +465,118 @@ function triggerGooeyWords() {
   window.addEventListener('resize', resize);
   resize();
   animate();
+})();
+
+/* ─── HORIZONTAL SCROLL TRACK ───────────── */
+(function () {
+  const track  = document.querySelector('.h-track');
+  const sticky = document.querySelector('.h-sticky');
+  const flex   = document.querySelector('.h-flex');
+  if (!track || !flex) return;
+
+  const PANELS    = 3;
+  const activated = [];
+  let   snapTimer = null;
+
+  function activatePanel(idx) {
+    if (activated[idx]) return;
+    activated[idx] = true;
+    const panel = flex.children[idx];
+    if (!panel) return;
+    panel.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
+      const delay = el.dataset.delay || 0;
+      setTimeout(() => el.classList.add('visible'), +delay);
+    });
+  }
+
+  // Dots
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'h-progress';
+  const dots = Array.from({ length: PANELS }, (_, i) => {
+    const d = document.createElement('span');
+    d.className = 'h-dot' + (i === 0 ? ' active' : '');
+    return d;
+  });
+  dots.forEach(d => dotsWrap.appendChild(d));
+  sticky.appendChild(dotsWrap);
+
+  // Scroll hint
+  const hint = document.createElement('div');
+  hint.className = 'h-scroll-hint';
+  hint.innerHTML = '<span>SCROLL</span><div class="h-hint-arrow">→</div>';
+  sticky.appendChild(hint);
+
+  function snapToPanel(idx) {
+    const maxScroll = track.offsetHeight - window.innerHeight;
+    const target    = track.offsetTop + (idx / (PANELS - 1)) * maxScroll;
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  }
+
+  function scheduleSnap() {
+    clearTimeout(snapTimer);
+    snapTimer = setTimeout(() => {
+      const ms = track.offsetHeight - window.innerHeight;
+      const s  = window.scrollY - track.offsetTop;
+      // User has exited the track (forward or backward) — do NOT snap
+      if (s <= 0 || s >= ms) return;
+      const p       = s / ms;
+      const snapIdx = Math.round(p * (PANELS - 1));
+      const target  = track.offsetTop + (snapIdx / (PANELS - 1)) * ms;
+      if (Math.abs(window.scrollY - target) > 8) {
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      }
+    }, 120);
+  }
+
+  function update() {
+    if (window.innerWidth <= 900) {
+      flex.style.transform = '';
+      dotsWrap.style.display = 'none';
+      hint.style.display = 'none';
+      for (let i = 0; i < PANELS; i++) activatePanel(i);
+      return;
+    }
+    dotsWrap.style.display = '';
+
+    const scrolled  = window.scrollY - track.offsetTop;
+    const maxScroll = track.offsetHeight - window.innerHeight;
+    // Only run within the track
+    if (scrolled < 0 || scrolled > maxScroll + window.innerHeight) return;
+
+    const progress  = Math.max(0, Math.min(1, scrolled / maxScroll));
+    const maxX      = flex.scrollWidth - window.innerWidth;
+    // Use integer pixels to avoid subpixel blur
+    flex.style.transform = `translateX(-${Math.round(progress * maxX)}px)`;
+
+    const activePanel = Math.round(progress * (PANELS - 1));
+    dots.forEach((d, i) => d.classList.toggle('active', i === activePanel));
+    hint.style.opacity = progress < 0.06 ? '1' : '0';
+
+    // Activate panel reveals
+    const thresholds = [0, 0.38, 0.72];
+    for (let i = 0; i < PANELS; i++) {
+      if (progress >= thresholds[i]) activatePanel(i);
+    }
+
+    // Snap to nearest panel when scroll stops (only if still inside track)
+    scheduleSnap();
+  }
+
+  // Nav link override
+  const panelMap = { 'sobre-mi': 0, 'proceso': 1, 'testimonios': 2 };
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    const id = link.getAttribute('href').slice(1);
+    if (!(id in panelMap)) return;
+    link.addEventListener('click', e => {
+      if (window.innerWidth <= 900) return;
+      e.preventDefault();
+      snapToPanel(panelMap[id]);
+    });
+  });
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', () => { clearTimeout(snapTimer); update(); });
+  update();
 })();
 
 /* ─── LOCATION MAP ───────────────────────── */
