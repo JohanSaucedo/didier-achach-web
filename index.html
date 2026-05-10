@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Healthy and Strong — L.N. Didier Achach · Nutriólogo Deportivo</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -11,6 +15,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
+
+  <!-- GOOEY FILTER -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="gooey">
+        <feColorMatrix in="SourceGraphic" type="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/>
+      </filter>
+    </defs>
+  </svg>
 
   <!-- PRELOADER -->
   <div id="preloader">
@@ -285,41 +299,72 @@
         <span class="section-label">— 04 / Resultados</span>
         <h2 class="section-title">LO QUE DICEN<br><em>MIS PACIENTES</em></h2>
       </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card reveal-up" data-delay="0">
-          <div class="stars">★★★★★</div>
-          <p>"Perdí 12 kg en 4 meses sin sentir que estaba a dieta. Didier me enseñó a comer, no a sufrir. Mis marcas en el gym mejoraron notablemente."</p>
-          <div class="tc-author">
-            <div class="tc-avatar">JM</div>
+      <div class="testimonials-bento">
+
+        <!-- LARGE FEATURED CARD — left -->
+        <div class="tb-featured reveal-up" data-delay="0">
+          <div class="tb-brand-top">
+            <div class="tb-brand-badge">H&amp;S</div>
+            <div class="tb-brand-info">
+              <span class="tb-brand-name">Healthy &amp; Strong</span>
+              <span class="tb-brand-desc">Nutrición Deportiva · Mérida</span>
+            </div>
+          </div>
+          <div class="tb-stars">★★★★★</div>
+          <p class="tb-quote">"Perdí 12 kg en 4 meses sin sentir que estaba a dieta. Didier me enseñó a comer, no a sufrir. Mis marcas en el gym mejoraron notablemente desde la primera semana de empezar el plan."</p>
+          <div class="tb-author">
+            <div class="tb-avatar">JM</div>
             <div>
               <strong>Juan M.</strong>
               <span>CrossFit · 28 años</span>
             </div>
           </div>
         </div>
-        <div class="testimonial-card reveal-up featured" data-delay="150">
-          <div class="stars">★★★★★</div>
-          <p>"Me preparé para mi primera competencia de fisiculturismo con Didier. El protocolo de peaking fue impecable, llegué en la mejor condición de mi vida."</p>
-          <div class="tc-author">
-            <div class="tc-avatar">KL</div>
-            <div>
-              <strong>Karen L.</strong>
-              <span>Fisiculturismo · 25 años</span>
+
+        <!-- RIGHT COLUMN -->
+        <div class="tb-right">
+
+          <!-- MEDIUM CARD — top right -->
+          <div class="tb-card reveal-up" data-delay="150">
+            <div class="tb-stars">★★★★★</div>
+            <p class="tb-quote">"Me preparé para mi primera competencia de fisiculturismo con Didier. El protocolo de peaking fue impecable, llegué en la mejor condición de mi vida."</p>
+            <div class="tb-author">
+              <div class="tb-avatar">KL</div>
+              <div>
+                <strong>Karen L.</strong>
+                <span>Fisiculturismo · 25 años</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="testimonial-card reveal-up" data-delay="300">
-          <div class="stars">★★★★★</div>
-          <p>"Como corredor de maratón necesitaba algo serio. El plan de nutrición de Didier mejoró mi tiempo en 18 minutos. La diferencia fue brutal."</p>
-          <div class="tc-author">
-            <div class="tc-avatar">RA</div>
-            <div>
-              <strong>Roberto A.</strong>
-              <span>Running · 35 años</span>
+
+          <!-- BOTTOM ROW — two small cards -->
+          <div class="tb-bottom-row">
+            <div class="tb-card tb-small reveal-up" data-delay="200">
+              <div class="tb-stars">★★★★★</div>
+              <p class="tb-quote">"Mejoré mi tiempo en maratón 18 minutos. La diferencia fue brutal."</p>
+              <div class="tb-author">
+                <div class="tb-avatar">RA</div>
+                <div>
+                  <strong>Roberto A.</strong>
+                  <span>Running · 35 años</span>
+                </div>
+              </div>
+            </div>
+            <div class="tb-card tb-small reveal-up" data-delay="250">
+              <div class="tb-stars">★★★★★</div>
+              <p class="tb-quote">"Gané músculo sin perder energía. Plan totalmente adaptado a mis horarios."</p>
+              <div class="tb-author">
+                <div class="tb-avatar">AS</div>
+                <div>
+                  <strong>Ana S.</strong>
+                  <span>Gym · 31 años</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+
+        </div><!-- /tb-right -->
+      </div><!-- /testimonials-bento -->
     </div>
   </section>
 

@@ -145,8 +145,9 @@
     images.push(img);
   }
 
-  let frame    = 0;
-  let lastTime = 0;
+  let frame          = 0;
+  let lastTime       = 0;
+  let gooeyTriggered = false;
 
   function tick(ts) {
     if (frame >= TOTAL - 1) return; // congelado en último frame
@@ -154,6 +155,10 @@
       frame++;
       ctx.drawImage(images[frame], 0, 0, SRC_W, SRC_H);
       lastTime = ts;
+      if (!gooeyTriggered && frame >= TOTAL - 44) {
+        gooeyTriggered = true;
+        triggerGooeyWords();
+      }
     }
     requestAnimationFrame(tick);
   }
@@ -165,6 +170,17 @@ function triggerHeroReveal() {
   heroEls.forEach((el, i) => {
     setTimeout(() => el.classList.add('visible'), i * 120 + 100);
   });
+}
+
+function triggerGooeyWords() {
+  const words = document.querySelector('.hero-words');
+  const hwl   = document.querySelector('.hw-l');
+  const hwr   = document.querySelector('.hw-r');
+  if (!words || !hwl || !hwr) return;
+  words.style.filter = 'url(#gooey)';
+  hwl.classList.add('gooey-animate');
+  hwr.classList.add('gooey-animate');
+  hwr.addEventListener('animationend', () => { words.style.filter = ''; }, { once: true });
 }
 
 /* ─── SCROLL REVEAL ───────────────────────── */
@@ -338,4 +354,115 @@ function triggerHeroReveal() {
       form.reset();
     }, 3000);
   });
+})();
+
+/* ─── BEAMS BACKGROUND — SERVICIOS ──────────── */
+(function () {
+  const section = document.getElementById('servicios');
+  if (!section) return;
+
+  // Canvas
+  const canvas = document.createElement('canvas');
+  Object.assign(canvas.style, {
+    position: 'absolute', inset: '0',
+    width: '100%', height: '100%',
+    zIndex: '0', pointerEvents: 'none',
+    filter: 'blur(15px)',
+  });
+  section.insertBefore(canvas, section.firstChild);
+
+  // Pulsing overlay
+  const overlay = document.createElement('div');
+  Object.assign(overlay.style, {
+    position: 'absolute', inset: '0',
+    zIndex: '1', pointerEvents: 'none',
+    backdropFilter: 'blur(50px)',
+    background: 'rgba(10,10,10,0.05)',
+    animation: 'beams-pulse 10s ease-in-out infinite',
+  });
+  canvas.insertAdjacentElement('afterend', overlay);
+
+  if (!document.getElementById('beams-style')) {
+    const s = document.createElement('style');
+    s.id = 'beams-style';
+    s.textContent = `@keyframes beams-pulse { 0%,100%{opacity:.05} 50%{opacity:.15} }`;
+    document.head.appendChild(s);
+  }
+
+  const container = section.querySelector('.container');
+  if (container) { container.style.position = 'relative'; container.style.zIndex = '2'; }
+
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, beams = [], animId = null;
+  const TOTAL = 30;
+
+  // Rojo #e63535 → h:0, Amarillo #f5de00 → h:53, Verde #4a9e2f → h:107, Magenta #C2185B → h:337
+  const BRAND_HUES = [0, 53, 107, 337];
+  const randHue = () => BRAND_HUES[Math.floor(Math.random() * BRAND_HUES.length)];
+
+  function createBeam() {
+    return {
+      x: Math.random() * W * 1.5 - W * 0.25,
+      y: Math.random() * H * 1.5 - H * 0.25,
+      width: 30 + Math.random() * 60,
+      length: H * 2.5,
+      angle: -35 + Math.random() * 10,
+      speed: 3 + Math.random() * 4,
+      opacity: 0.12 + Math.random() * 0.16,
+      hue: randHue(),
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.02 + Math.random() * 0.03,
+    };
+  }
+
+  function resetBeam(b, i) {
+    const col = i % 3, spacing = W / 3;
+    b.y = H + 100;
+    b.x = col * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
+    b.width = 100 + Math.random() * 100;
+    b.speed = 3 + Math.random() * 4;
+    b.hue = randHue();
+    b.opacity = 0.2 + Math.random() * 0.1;
+  }
+
+  function drawBeam(b) {
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate(b.angle * Math.PI / 180);
+    const op = b.opacity * (0.8 + Math.sin(b.pulse) * 0.2);
+    const g = ctx.createLinearGradient(0, 0, 0, b.length);
+    g.addColorStop(0,   `hsla(${b.hue},85%,65%,0)`);
+    g.addColorStop(0.1, `hsla(${b.hue},85%,65%,${op * 0.5})`);
+    g.addColorStop(0.4, `hsla(${b.hue},85%,65%,${op})`);
+    g.addColorStop(0.6, `hsla(${b.hue},85%,65%,${op})`);
+    g.addColorStop(0.9, `hsla(${b.hue},85%,65%,${op * 0.5})`);
+    g.addColorStop(1,   `hsla(${b.hue},85%,65%,0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(-b.width / 2, 0, b.width, b.length);
+    ctx.restore();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.filter = 'blur(35px)';
+    beams.forEach((b, i) => {
+      b.y -= b.speed;
+      b.pulse += b.pulseSpeed;
+      if (b.y + b.length < -100) resetBeam(b, i);
+      drawBeam(b);
+    });
+    animId = requestAnimationFrame(animate);
+  }
+
+  function resize() {
+    W = section.offsetWidth;
+    H = section.offsetHeight || window.innerHeight;
+    canvas.width  = W;
+    canvas.height = H;
+    beams = Array.from({ length: TOTAL }, createBeam);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  animate();
 })();
