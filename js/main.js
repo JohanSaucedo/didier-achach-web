@@ -466,3 +466,40 @@ function triggerGooeyWords() {
   resize();
   animate();
 })();
+
+/* ─── LOCATION MAP ───────────────────────── */
+(function () {
+  const card = document.getElementById('lmCard');
+  const hint = document.getElementById('lmHint');
+  if (!card) return;
+
+  let expanded = false;
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const dx = Math.max(-60, Math.min(60, e.clientX - (rect.left + rect.width  / 2)));
+    const dy = Math.max(-60, Math.min(60, e.clientY - (rect.top  + rect.height / 2)));
+    const ry =  (dx / 60) * 8;
+    const rx = -(dy / 60) * 8;
+    card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    if (!expanded && hint) {
+      hint.style.opacity = '1';
+      hint.style.transform = 'translateX(-50%) translateY(0)';
+    }
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    if (hint) {
+      hint.style.opacity = '0';
+      hint.style.transform = 'translateX(-50%) translateY(4px)';
+    }
+  });
+
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.lm-link')) return;
+    expanded = !expanded;
+    card.classList.toggle('expanded', expanded);
+    if (hint) hint.style.opacity = '0';
+  });
+})();
