@@ -615,3 +615,48 @@ function triggerGooeyWords() {
     if (hint) hint.style.opacity = '0';
   });
 })();
+
+/* ─── SPOTLIGHT — contacto ───────────────── */
+(function () {
+  if (typeof gsap === 'undefined') return;
+  gsap.to('.spotlight-left', {
+    keyframes: [
+      { xPercent: 20, yPercent: -20, rotate: 15, duration: 4 },
+      { xPercent: -20, yPercent: 20, rotate: -15, duration: 4 },
+      { xPercent: 0, yPercent: 0, rotate: 0, duration: 4 }
+    ],
+    repeat: -1, yoyo: true, ease: 'sine.inOut'
+  });
+  gsap.to('.spotlight-mid', {
+    keyframes: [
+      { xPercent: 20, yPercent: 30, rotate: 0, duration: 5 },
+      { xPercent: -20, yPercent: 10, rotate: 20, duration: 5 },
+      { xPercent: 0, yPercent: 0, rotate: -20, duration: 5 }
+    ],
+    delay: 3, repeat: -1, yoyo: true, ease: 'sine.inOut'
+  });
+  gsap.to('.spotlight-right', {
+    keyframes: [
+      { xPercent: -30, yPercent: -20, rotate: -10, duration: 6 },
+      { xPercent: 10, yPercent: 20, rotate: 25, duration: 6 },
+      { xPercent: 0, yPercent: 0, rotate: 10, duration: 6 }
+    ],
+    delay: 5, repeat: -1, yoyo: true, ease: 'sine.inOut'
+  });
+})();
+
+/* ─── SHAPES — sobre-mi & proceso ────────── */
+(function () {
+  ['sobre-mi', 'proceso'].forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        sec.classList.add('shapes-active');
+        obs.disconnect();
+      }
+    }, { threshold: 0.15 });
+    obs.observe(sec);
+  });
+})();
+
