@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=4">
+  <link rel="stylesheet" href="css/styles.css?v=5">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
@@ -317,6 +317,13 @@
 
   <!-- TESTIMONIOS -->
   <section id="testimonios">
+    <div class="svc-shapes" aria-hidden="true">
+      <div class="svc-shape svc-shape--1"></div>
+      <div class="svc-shape svc-shape--2"></div>
+      <div class="svc-shape svc-shape--3"></div>
+      <div class="svc-shape svc-shape--4"></div>
+      <div class="svc-shape svc-shape--5"></div>
+    </div>
     <div class="container">
       <div class="section-header reveal-up centered">
         <span class="section-label">— 04 / Resultados</span>
@@ -397,47 +404,16 @@
 
   <!-- CONTACTO -->
   <section id="contacto">
-    <div class="spotlight-overlay" aria-hidden="true">
-      <div class="spotlight spotlight-left"></div>
-      <div class="spotlight spotlight-mid"></div>
-      <div class="spotlight spotlight-right"></div>
-    </div>
     <div class="container">
       <div class="contact-grid">
         <div class="contact-left reveal-left">
           <span class="section-label">— 05 / Contacto</span>
           <h2 class="section-title">EMPIEZA<br><em>HOY</em></h2>
           <p class="contact-sub">Tu primera consulta es el primer paso. Agenda ahora y comencemos a trabajar en tu mejor versión.</p>
-          <div class="contact-items">
-            <div class="contact-item">
-              <span class="ci-icon">📍</span>
-              <div>
-                <strong>Ubicación</strong>
-                <span>Mérida, Yucatán, México</span>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="ci-icon">📱</span>
-              <div>
-                <strong>WhatsApp</strong>
-                <span>+52 999 000 0000</span>
-              </div>
-            </div>
-            <div class="contact-item">
-              <span class="ci-icon">📧</span>
-              <div>
-                <strong>Email</strong>
-                <span>didier@nutriciondeportiva.mx</span>
-              </div>
-            </div>
-          </div>
-
           <!-- LOCATION MAP WIDGET -->
           <div class="lm-wrap">
             <div class="lm-outer">
               <div class="lm-card" id="lmCard">
-
-                <!-- Map view — visible when expanded -->
                 <div class="lm-map-view">
                   <div class="lm-map-bg"></div>
                   <div class="lm-roads">
@@ -463,14 +439,12 @@
                   </div>
                   <div class="lm-pin">
                     <svg width="28" height="32" viewBox="0 0 24 28" fill="none">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="var(--accent)"/>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#e63535"/>
                       <circle cx="12" cy="9" r="2.5" fill="#ffffff"/>
                     </svg>
                   </div>
                   <div class="lm-map-fade"></div>
                 </div>
-
-                <!-- Grid pattern — visible when collapsed -->
                 <div class="lm-grid">
                   <svg width="100%" height="100%">
                     <defs>
@@ -481,11 +455,7 @@
                     <rect width="100%" height="100%" fill="url(#lm-gp)"/>
                   </svg>
                 </div>
-
-                <!-- Gradient overlay -->
                 <div class="lm-overlay"></div>
-
-                <!-- Content -->
                 <div class="lm-content">
                   <div class="lm-top">
                     <div class="lm-icon">
@@ -510,7 +480,6 @@
                     <div class="lm-line"></div>
                   </div>
                 </div>
-
               </div>
             </div>
             <p class="lm-hint" id="lmHint">Click para expandir</p>
@@ -555,8 +524,17 @@
             </div>
             <button type="submit" class="btn-primary full magnetic">Enviar mensaje →</button>
           </form>
+
+          <!-- Spline 3D -->
+          <div class="spline-wrapper">
+            <div id="spline-loader" class="spline-loader-container">
+              <span class="spline-loader"></span>
+            </div>
+            <canvas id="canvas3d" class="spline-canvas"></canvas>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -588,6 +566,43 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="js/main.js?v=4"></script>
+  <script src="js/main.js?v=5"></script>
+  <script type="module">
+    import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.93/build/runtime.js';
+    const canvas = document.getElementById('canvas3d');
+    const loader = document.getElementById('spline-loader');
+    if (canvas) {
+      const app = new Application(canvas);
+      app.load('./scene.splinecode').then(() => {
+        if (loader) { loader.classList.add('hidden'); }
+        canvas.classList.add('loaded');
+
+        // Map global mouse X across viewport → canvas X range
+        // Fix Y to canvas vertical center to prevent robot from tilting
+        function forwardMouse(clientX, clientY, type, extra = {}) {
+          const rect = canvas.getBoundingClientRect();
+          const mx = rect.left + (clientX / window.innerWidth) * rect.width;
+          const my = rect.top  + (clientY / window.innerHeight) * rect.height;
+          const Ctor = type.startsWith('pointer') ? PointerEvent : MouseEvent;
+          canvas.dispatchEvent(new Ctor(type, {
+            clientX: mx, clientY: my,
+            bubbles: false, cancelable: true,
+            view: window, ...extra
+          }));
+        }
+
+        document.addEventListener('pointermove', (e) => {
+          forwardMouse(e.clientX, e.clientY, 'pointermove', {
+            pointerId: e.pointerId, pointerType: e.pointerType, isPrimary: e.isPrimary
+          });
+        }, { passive: true });
+
+        document.addEventListener('mousemove', (e) => {
+          forwardMouse(e.clientX, e.clientY, 'mousemove');
+        }, { passive: true });
+
+      }).catch(err => console.error('Spline load error:', err));
+    }
+  </script>
 </body>
 </html>

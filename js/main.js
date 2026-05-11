@@ -356,9 +356,8 @@ function triggerGooeyWords() {
   });
 })();
 
-/* ─── BEAMS BACKGROUND — SERVICIOS ──────────── */
-(function () {
-  const section = document.getElementById('servicios');
+/* ─── BEAMS BACKGROUND — SERVICIOS & CONTACTO ──────────── */
+function initBeams(section) {
   if (!section) return;
 
   // Canvas
@@ -388,6 +387,7 @@ function triggerGooeyWords() {
     s.textContent = `@keyframes beams-pulse { 0%,100%{opacity:.05} 50%{opacity:.15} }`;
     document.head.appendChild(s);
   }
+
 
   const container = section.querySelector('.container');
   if (container) { container.style.position = 'relative'; container.style.zIndex = '2'; }
@@ -465,7 +465,10 @@ function triggerGooeyWords() {
   window.addEventListener('resize', resize);
   resize();
   animate();
-})();
+}
+
+initBeams(document.getElementById('servicios'));
+initBeams(document.getElementById('contacto'));
 
 /* ─── HORIZONTAL SCROLL TRACK ───────────── */
 (function () {
@@ -616,6 +619,7 @@ function triggerGooeyWords() {
   });
 })();
 
+
 /* ─── SPOTLIGHT — contacto ───────────────── */
 (function () {
   if (typeof gsap === 'undefined') return;
@@ -645,9 +649,12 @@ function triggerGooeyWords() {
   });
 })();
 
+
+
+
 /* ─── SHAPES — sobre-mi & proceso ────────── */
 (function () {
-  ['sobre-mi', 'proceso'].forEach(id => {
+  ['sobre-mi', 'proceso', 'testimonios'].forEach(id => {
     const sec = document.getElementById(id);
     if (!sec) return;
     const obs = new IntersectionObserver(entries => {
@@ -659,4 +666,3 @@ function triggerGooeyWords() {
     obs.observe(sec);
   });
 })();
-
