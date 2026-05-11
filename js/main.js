@@ -76,18 +76,6 @@
   });
 })();
 
-/* ─── MAGNETIC BUTTONS ────────────────────── */
-(function () {
-  document.querySelectorAll('.magnetic').forEach(el => {
-    el.addEventListener('mousemove', e => {
-      const r = el.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
-      el.style.transform = `translate(${dx * .2}px, ${dy * .25}px)`;
-    });
-    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-  });
-})();
 
 /* ─── HEADER SCROLL ───────────────────────── */
 (function () {
@@ -531,6 +519,47 @@ initBeams(document.getElementById('contacto'));
     }, 120);
   }
 
+  let targetX  = 0;
+  let currentX = 0;
+  let rafId    = null;
+  const LERP   = 0.10; // suavidad: 0.06 = muy suave, 0.18 = más directo
+
+  function getTargetX() {
+    const scrolled  = window.scrollY - track.offsetTop;
+    const maxScroll = track.offsetHeight - window.innerHeight;
+    const progress  = Math.max(0, Math.min(1, scrolled / maxScroll));
+    const maxX      = flex.scrollWidth - window.innerWidth;
+    return progress * maxX;
+  }
+
+  function updateUI(progress) {
+    const activePanel = Math.round(progress * (PANELS - 1));
+    dots.forEach((d, i) => d.classList.toggle('active', i === activePanel));
+    hint.style.opacity = progress < 0.06 ? '1' : '0';
+    const thresholds = [0, 0.38, 0.72];
+    for (let i = 0; i < PANELS; i++) {
+      if (progress >= thresholds[i]) activatePanel(i);
+    }
+  }
+
+  function rafLoop() {
+    currentX += (targetX - currentX) * LERP;
+    flex.style.transform = `translateX(-${currentX}px)`;
+
+    const maxScroll = track.offsetHeight - window.innerHeight;
+    const maxX      = flex.scrollWidth - window.innerWidth;
+    const progress  = maxX > 0 ? currentX / maxX : 0;
+    updateUI(progress);
+
+    if (Math.abs(targetX - currentX) > 0.3) {
+      rafId = requestAnimationFrame(rafLoop);
+    } else {
+      currentX = targetX;
+      flex.style.transform = `translateX(-${currentX}px)`;
+      rafId = null;
+    }
+  }
+
   function update() {
     if (window.innerWidth <= 900) {
       flex.style.transform = '';
@@ -543,25 +572,11 @@ initBeams(document.getElementById('contacto'));
 
     const scrolled  = window.scrollY - track.offsetTop;
     const maxScroll = track.offsetHeight - window.innerHeight;
-    // Only run within the track
     if (scrolled < 0 || scrolled > maxScroll + window.innerHeight) return;
 
-    const progress  = Math.max(0, Math.min(1, scrolled / maxScroll));
-    const maxX      = flex.scrollWidth - window.innerWidth;
-    // Use integer pixels to avoid subpixel blur
-    flex.style.transform = `translateX(-${Math.round(progress * maxX)}px)`;
+    targetX = getTargetX();
+    if (!rafId) rafId = requestAnimationFrame(rafLoop);
 
-    const activePanel = Math.round(progress * (PANELS - 1));
-    dots.forEach((d, i) => d.classList.toggle('active', i === activePanel));
-    hint.style.opacity = progress < 0.06 ? '1' : '0';
-
-    // Activate panel reveals
-    const thresholds = [0, 0.38, 0.72];
-    for (let i = 0; i < PANELS; i++) {
-      if (progress >= thresholds[i]) activatePanel(i);
-    }
-
-    // Snap to nearest panel when scroll stops (only if still inside track)
     scheduleSnap();
   }
 
@@ -578,7 +593,7 @@ initBeams(document.getElementById('contacto'));
   });
 
   window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', () => { clearTimeout(snapTimer); update(); });
+  window.addEventListener('resize', () => { clearTimeout(snapTimer); currentX = getTargetX(); targetX = currentX; update(); });
   update();
 })();
 
