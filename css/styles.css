@@ -20,6 +20,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+html::-webkit-scrollbar { display: none; }
 
 body {
   background: var(--bg);
@@ -269,7 +270,7 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   animation: gooey-form 1.5s cubic-bezier(.25,.46,.45,.94) forwards;
 }
 .hw-r.gooey-animate {
-  animation: gooey-form 1.5s cubic-bezier(.25,.46,.45,.94) 0.28s forwards;
+  animation: gooey-form 1.5s cubic-bezier(.25,.46,.45,.94) 0.28s both;
 }
 
 /* Giant background words */
@@ -287,7 +288,7 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   font-size: clamp(7rem, 16vw, 22rem);
   line-height: 1;
   letter-spacing: -0.01em;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,1);
   user-select: none;
   white-space: nowrap;
   flex-shrink: 0;
@@ -1605,6 +1606,7 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 }
 
 @media (max-width: 768px) {
+  html, body { overflow-x: hidden; }
   .nav-links { display: none; }
   .menu-toggle { display: flex; }
   .services-grid { grid-template-columns: 1fr; }
@@ -1617,6 +1619,35 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
   .hero-stats { gap: 1.5rem; }
   #cursor, #cursor-follower { display: none; }
   body { cursor: auto; }
+
+  /* ── HERO MOBILE ── */
+  .hw-l, .hw-r { font-size: clamp(3rem, 18vw, 5rem); }
+  .hw-l { margin-top: 14vh; }
+  .hw-r { align-self: flex-start; margin-top: 32vh; margin-bottom: 0; padding-right: 7vw; }
+  .hero-scroll-indicator { display: none; }
+  .hero-ui { padding: 0 1.25rem 2rem; }
+  .hero-ui-left { max-width: 100%; }
+  .hero-ui-right { gap: .75rem; margin-top: 1rem; }
+  .hero-eyebrow { gap: .5rem; }
+  .hero-name { font-size: .7rem; }
+  .hero-tagline { font-size: clamp(1rem, 4vw, 1.2rem); }
+  .btn-primary, .btn-ghost { padding: .7rem 1.25rem; font-size: .75rem; }
+  .hero-stats { gap: 1rem; margin-top: .5rem; }
+  .h-stat-num { font-size: 1.5rem; }
+  .h-stat-label { font-size: .55rem; }
+
+  /* ── SPLINE ROBOT MOBILE ── */
+  .spline-wrapper {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    height: 420px;
+    overflow: hidden;
+  }
+  .spline-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    transform: translateX(-8%);
+  }
 }
 
 @media (max-width: 520px) {
