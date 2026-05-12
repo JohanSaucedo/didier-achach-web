@@ -1606,7 +1606,6 @@ body.cursor-hover #cursor-follower { width: 56px; height: 56px; border-color: va
 }
 
 @media (max-width: 768px) {
-  html, body { overflow-x: hidden; }
   .nav-links { display: none; }
   .menu-toggle { display: flex; }
   .services-grid { grid-template-columns: 1fr; }
